@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Desafio.Nibo.Domain.Entity.Transaction>
+
+@{
+    ViewData["Title"] = "Imported";
+}
+
+<h1>Importados</h1>
+
+<p>
+    <a asp-action="Index">Voltar</a>
+</p>
+<div align="right"><b>@Model.Count() registro(s)</b></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Value.ToString("#,##0.00")
+                </td>
+            </tr>}
+    </tbody>
+</table>
+@if (Model.Count().Equals(0))
+{
+    <p>Nenhuma transação foi importada.</p>
+}

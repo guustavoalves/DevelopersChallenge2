@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Desafio.Nibo.Domain.Entity.Transaction>
+
+@{
+    ViewData["Title"] = "Extract";
+}
+
+<h1>Extrato</h1>
+
+<p>
+    <a asp-action="DeleteAll">Limpar Transações</a>
+</p>
+
+@using (Html.BeginForm("Extract", "Home", FormMethod.Get))
+{
+    <p>
+        <table>
+            <tr>
+                <td align="right">
+                    Tipo:&nbsp;
+                </td>
+                <td>
+                    @Html.DropDownList("type", new List<SelectListItem>
+                               {
+                                   new SelectListItem{Text = "", Value = ""},
+                                   new SelectListItem{Text = "DEBIT", Value = "1"},
+                                   new SelectListItem{Text = "CREDIT", Value = "2"},                                  
+                               }, new { style = "width: 178px; height: 30px" })
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    Descrição:&nbsp;
+                </td>
+                <td>
+                    @Html.TextBox("search", ViewBag.CurrentSearch as string)
+                    <input type="submit" value="Filtrar" />
+                </td>
+            </tr>
+        </table>
+    </p>
+}
+
+<div align="right"><b>@Model.Count() registro(s)</b></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Data", "Extract", new { order = "1", search = ViewBag.CurrentSearch, type = ViewBag.CurrentTipo })
+            </th>
+            <th>
+                @Html.ActionLink("Tipo", "Extract", new { order = "2", search = ViewBag.CurrentSearch, type = ViewBag.CurrentTipo })
+            </th>
+            <th>
+                @Html.ActionLink("Descrição", "Extract", new { order = "3", search = ViewBag.CurrentSearch, type = ViewBag.CurrentTipo })
+            </th>
+            <th>
+                @Html.ActionLink("Valor", "Extract", new { order = "4", search = ViewBag.CurrentSearch, type = ViewBag.CurrentTipo })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Value.ToString("#,##0.00")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.Count().Equals(0))
+{
+    <p>Nenhuma transação encontrada.</p>
+}
